@@ -59,7 +59,6 @@ export const updatedSum = (
     (row) => row.type === ROW_TYPE.TOTAL_EXPENSE
   );
   if (totalExpenseRow) {
-    console.log(totalExpense2024);
     totalExpenseRow["year2021"] = getFormattedValueOrEmpty(totalExpense2021);
     totalExpenseRow["year2022"] = getFormattedValueOrEmpty(totalExpense2022);
     totalExpenseRow["year2024"] = getFormattedValueOrEmpty(totalExpense2024);
@@ -97,8 +96,6 @@ export const updatedVariance = (
 
   return rowsData;
 };
-
-export const updateVarianceSum = () => {};
 
 export const getFormattedValueOrEmpty = (value: number): string => {
   return value ? value.toFixed(2) : "";

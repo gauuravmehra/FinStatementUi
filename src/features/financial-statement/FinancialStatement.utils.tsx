@@ -27,17 +27,21 @@ export const updatedSum = (
   let totalRevenue2021 = 0;
   let totalRevenue2022 = 0;
   let totalRevenue2024 = 0;
+
   let totalExpense2021 = 0;
   let totalExpense2022 = 0;
+  let totalExpense2024 = 0;
 
   rowsData.forEach((row) => {
+    console.log(row);
     if (row.type === ROW_TYPE.REVENUE) {
-      totalRevenue2021 += parseFloat(row["year2021"].replace(/,/g, "") || "0");
-      totalRevenue2022 += parseFloat(row["year2022"].replace(/,/g, "") || "0");
-      totalRevenue2024 += parseFloat(row["year2024"].replace(/,/g, "") || "0");
+      totalRevenue2021 += formattedNumber(row["year2021"]);
+      totalRevenue2022 += formattedNumber(row["year2022"]);
+      totalRevenue2024 += formattedNumber(row["year2024"]);
     } else if (row.type === ROW_TYPE.EXPENSE) {
-      totalExpense2021 += parseFloat(row["year2021"].replace(/,/g, "") || "0");
-      totalExpense2022 += parseFloat(row["year2022"].replace(/,/g, "") || "0");
+      totalExpense2021 += formattedNumber(row["year2021"]);
+      totalExpense2022 += formattedNumber(row["year2022"]);
+      totalExpense2024 += formattedNumber(row["year2024"]);
     }
   });
 
@@ -46,17 +50,19 @@ export const updatedSum = (
     (row) => row.type === ROW_TYPE.TOTAL_REVENUE
   );
   if (totalRevenueRow) {
-    totalRevenueRow["year2021"] = totalRevenue2021.toFixed(2);
-    totalRevenueRow["year2022"] = totalRevenue2022.toFixed(2);
-    totalRevenueRow["year2024"] = totalRevenue2024.toFixed(2);
+    totalRevenueRow["year2021"] = getFormattedValueOrEmpty(totalRevenue2021);
+    totalRevenueRow["year2022"] = getFormattedValueOrEmpty(totalRevenue2022);
+    totalRevenueRow["year2024"] = getFormattedValueOrEmpty(totalRevenue2024);
   }
 
   const totalExpenseRow = updatedData.find(
     (row) => row.type === ROW_TYPE.TOTAL_EXPENSE
   );
   if (totalExpenseRow) {
-    totalExpenseRow["year2021"] = totalExpense2021.toFixed(2);
-    totalExpenseRow["year2022"] = totalExpense2022.toFixed(2);
+    console.log(totalExpense2024);
+    totalExpenseRow["year2021"] = getFormattedValueOrEmpty(totalExpense2021);
+    totalExpenseRow["year2022"] = getFormattedValueOrEmpty(totalExpense2022);
+    totalExpenseRow["year2024"] = getFormattedValueOrEmpty(totalExpense2024);
   }
 
   setRowsData(updatedData);
@@ -72,17 +78,17 @@ export const updatedVariance = (
     clone[rowIndex] = changedData;
 
     if (changedData.type === ROW_TYPE.REVENUE) {
-      const val2022 = parseFloat(
+      const year2022Val = parseFloat(
         changedData["year2022"].replace(/,/g, "") || "0"
       );
-      const val2024 = parseFloat(
+      const year2024Val = parseFloat(
         changedData["year2024"].replace(/,/g, "") || "0"
       );
 
-      clone[rowIndex]["varianceRow"] = calcVariance(val2022, val2024);
+      clone[rowIndex]["varianceRow"] = calcVariance(year2022Val, year2024Val);
       clone[rowIndex]["variancePercentRow"] = calcVariancePercent(
-        val2022,
-        val2024
+        year2022Val,
+        year2024Val
       );
     }
 
@@ -90,4 +96,14 @@ export const updatedVariance = (
   }
 
   return rowsData;
+};
+
+export const updateVarianceSum = () => {};
+
+export const getFormattedValueOrEmpty = (value: number): string => {
+  return value ? value.toFixed(2) : "";
+};
+
+export const formattedNumber = (value: string): number => {
+  return parseFloat(value.replace(/,/g, "") || "0");
 };

@@ -9,12 +9,14 @@ type TableProps = {
   columnDefs: ColDef[];
   rowsData: TableRowsProps[];
   onCellValueChanged: (event: any) => void;
+  onGridReady?: (data: any) => void;
 };
 
 export const Table = ({
   columnDefs,
   rowsData,
   onCellValueChanged,
+  onGridReady,
 }: TableProps) => {
   return (
     <StyledTableContainer className="ag-theme-quartz stripped">
@@ -22,6 +24,7 @@ export const Table = ({
         columnDefs={columnDefs}
         rowData={rowsData}
         onCellValueChanged={onCellValueChanged}
+        onGridReady={onGridReady}
         defaultColDef={{
           editable: true,
           sortable: true,

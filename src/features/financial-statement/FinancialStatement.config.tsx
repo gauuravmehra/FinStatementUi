@@ -12,6 +12,15 @@ export const ROW_TYPE = {
   TOTAL_EXPENSE: "TOTAL_EXPENSE",
 };
 
+export const Headings = {
+  MILLIONS: "(million)",
+  YEAR_2021: "31-12-2021",
+  YEAR_2022: "31-12-2022",
+  YEAR_2024: "31-12-2024",
+  VARIANCE: "Variance",
+  VARIANCE_PERCENT: "Variance %",
+};
+
 export const initRowsData: TableRowsProps[] = [
   {
     id: uuidv4(),
@@ -19,6 +28,8 @@ export const initRowsData: TableRowsProps[] = [
     year2021: "IFRS",
     year2022: "IFRS",
     year2024: "IFRS",
+    variance: "",
+    variancePercent: "",
     type: ROW_TYPE.GENERAL_INFO,
   },
   {
@@ -27,6 +38,8 @@ export const initRowsData: TableRowsProps[] = [
     year2021: "IFRS16 Adj",
     year2022: "IFRS16 Adj",
     year2024: "IFRS16 Adj",
+    variance: "",
+    variancePercent: "",
     type: ROW_TYPE.GENERAL_INFO,
   },
   {
@@ -35,6 +48,8 @@ export const initRowsData: TableRowsProps[] = [
     year2021: "HKD",
     year2022: "HKD",
     year2024: "HKD",
+    variance: "",
+    variancePercent: "",
     type: ROW_TYPE.GENERAL_INFO,
   },
   {
@@ -43,6 +58,8 @@ export const initRowsData: TableRowsProps[] = [
     year2021: "0.12826",
     year2022: "0.12826",
     year2024: "0.12826",
+    variance: "",
+    variancePercent: "",
     type: ROW_TYPE.GENERAL_INFO,
   },
   {
@@ -51,6 +68,8 @@ export const initRowsData: TableRowsProps[] = [
     year2021: "",
     year2022: "",
     year2024: "",
+    variance: "",
+    variancePercent: "",
     isHeaderRow: true,
     type: ROW_TYPE.HEADER,
   },
@@ -60,6 +79,8 @@ export const initRowsData: TableRowsProps[] = [
     year2021: "4,357.00",
     year2022: "14,333.00",
     year2024: "15,213.00",
+    variance: "",
+    variancePercent: "",
     type: ROW_TYPE.REVENUE,
   },
   {
@@ -68,6 +89,8 @@ export const initRowsData: TableRowsProps[] = [
     year2021: "35,814.00",
     year2022: "30,554.00",
     year2024: "29,312.00",
+    variance: "",
+    variancePercent: "",
     type: ROW_TYPE.REVENUE,
   },
   {
@@ -76,6 +99,8 @@ export const initRowsData: TableRowsProps[] = [
     year2021: "",
     year2022: "",
     year2024: "",
+    variance: "",
+    variancePercent: "",
     isOthersRow: true,
     type: ROW_TYPE.REVENUE,
   },
@@ -85,6 +110,8 @@ export const initRowsData: TableRowsProps[] = [
     year2021: "5,416.00",
     year2022: "6,149.00",
     year2024: "5,236.00",
+    variance: "",
+    variancePercent: "",
     type: ROW_TYPE.REVENUE,
   },
   {
@@ -93,6 +120,8 @@ export const initRowsData: TableRowsProps[] = [
     year2021: "",
     year2022: "",
     year2024: "",
+    variance: "",
+    variancePercent: "",
     isTotalRow: true,
     type: ROW_TYPE.TOTAL_REVENUE,
   },
@@ -102,6 +131,8 @@ export const initRowsData: TableRowsProps[] = [
     year2021: "",
     year2022: "",
     year2024: "",
+    variance: "",
+    variancePercent: "",
     isHeaderRow: true,
     type: ROW_TYPE.HEADER,
   },
@@ -111,6 +142,8 @@ export const initRowsData: TableRowsProps[] = [
     year2021: "4,357.00",
     year2022: "14,333.00",
     year2024: "",
+    variance: "",
+    variancePercent: "",
     type: ROW_TYPE.EXPENSE,
   },
   {
@@ -119,6 +152,8 @@ export const initRowsData: TableRowsProps[] = [
     year2021: "35,814.00",
     year2022: "30,554.00",
     year2024: "",
+    variance: "",
+    variancePercent: "",
     type: ROW_TYPE.EXPENSE,
   },
   {
@@ -127,6 +162,8 @@ export const initRowsData: TableRowsProps[] = [
     year2021: "35,814.00",
     year2022: "30,554.00",
     year2024: "",
+    variance: "",
+    variancePercent: "",
     type: ROW_TYPE.EXPENSE,
   },
   {
@@ -135,6 +172,8 @@ export const initRowsData: TableRowsProps[] = [
     year2021: "35,814.00",
     year2022: "30,554.00",
     year2024: "",
+    variance: "",
+    variancePercent: "",
     type: ROW_TYPE.EXPENSE,
   },
   {
@@ -143,6 +182,8 @@ export const initRowsData: TableRowsProps[] = [
     year2021: "",
     year2022: "",
     year2024: "",
+    variance: "",
+    variancePercent: "",
     isOthersRow: true,
     type: ROW_TYPE.EXPENSE,
   },
@@ -152,6 +193,8 @@ export const initRowsData: TableRowsProps[] = [
     year2021: "5,416.00",
     year2022: "6,149.00",
     year2024: "",
+    variance: "",
+    variancePercent: "",
     type: ROW_TYPE.EXPENSE,
   },
   {
@@ -160,6 +203,8 @@ export const initRowsData: TableRowsProps[] = [
     year2021: "385.00",
     year2022: "",
     year2024: "",
+    variance: "",
+    variancePercent: "",
     type: ROW_TYPE.EXPENSE,
   },
   {
@@ -168,6 +213,8 @@ export const initRowsData: TableRowsProps[] = [
     year2021: "",
     year2022: "",
     year2024: "",
+    variance: "",
+    variancePercent: "",
     isTotalRow: true,
     type: ROW_TYPE.TOTAL_EXPENSE,
   },
@@ -175,37 +222,44 @@ export const initRowsData: TableRowsProps[] = [
 
 export const initColumnConfig: ColDef[] = [
   {
-    headerName: "(million)",
+    headerName: Headings.MILLIONS,
     field: "million",
     width: 230,
   },
   {
-    headerName: "31-12-2021",
+    headerName: Headings.YEAR_2021,
     field: "year2021",
     width: 160,
     editable: (params) => !params.data.isTotalRow,
-    cellClass: (params) => (params.data.isTotalRow ? "bold" : ""),
+    cellClass: (params) => (params.data.isTotalRow ? "bold bordered" : ""),
   },
   {
-    headerName: "31-12-2022",
+    headerName: Headings.YEAR_2022,
     field: "year2022",
     width: 160,
     editable: (params) => !params.data.isTotalRow,
-    cellClass: (params) => (params.data.isTotalRow ? "bold" : ""),
+    cellClass: (params) => (params.data.isTotalRow ? "bold bordered" : ""),
   },
   {
-    headerName: "31-12-2024",
+    headerName: Headings.YEAR_2024,
     field: "year2024",
     width: 160,
     editable: (params) => !params.data.isTotalRow,
-    cellClass: (params) => (params.data.isTotalRow ? "bold" : ""),
+    cellClass: (params) => (params.data.isTotalRow ? "bold bordered" : ""),
   },
   {
-    headerName: "Variance",
+    headerName: Headings.VARIANCE,
     field: "variance",
     width: 160,
     editable: false,
-    cellClass: (params) => (parseFloat(params.value) < 0 ? "error" : "success"),
+    cellClass: (params) => {
+      if (params.data.isTotalRow) {
+        return parseFloat(params.value) < 0
+          ? "bold bordered error"
+          : "bold bordered success";
+      }
+      return parseFloat(params.value) < 0 ? "error" : "success";
+    },
     valueGetter: (params: ValueGetterParams) => {
       if (params.data.type === ROW_TYPE.REVENUE) {
         const val2022 = parseFloat(
@@ -215,17 +269,26 @@ export const initColumnConfig: ColDef[] = [
           params.data["year2024"].replace(/,/g, "") || "0"
         );
         if (val2022 === 0) return "";
-        return calcVariance(val2022, val2024);
+        const val = calcVariance(val2022, val2024);
+        params.data.variance = val;
+        return val;
       }
-      return "";
+      return params.data.variance;
     },
   },
   {
-    headerName: "Variance %",
-    field: "variancePercentage",
+    headerName: Headings.VARIANCE_PERCENT,
+    field: "variancePercent",
     width: 160,
     editable: false,
-    cellClass: (params) => (parseFloat(params.value) < 0 ? "error" : "success"),
+    cellClass: (params) => {
+      if (params.data.isTotalRow) {
+        return parseFloat(params.value) < 0
+          ? "bold bordered error"
+          : "bold bordered success";
+      }
+      return parseFloat(params.value) < 0 ? "error" : "success";
+    },
     valueGetter: (params: ValueGetterParams) => {
       if (
         params.data.type === ROW_TYPE.REVENUE &&
@@ -239,10 +302,12 @@ export const initColumnConfig: ColDef[] = [
             params.data["year2024"].replace(/,/g, "") || "0"
           );
           if (val2022 === 0) return "";
-          return calcVariancePercent(val2022, val2024);
+          const val = calcVariancePercent(val2022, val2024);
+          params.data.variancePercent = val;
+          return val;
         }
       }
-      return "";
+      return params.data.variancePercent;
     },
   },
 ];

@@ -7,6 +7,11 @@ export const StyledContainer = styled.div`
   .bold {
     font-weight: bold;
   }
+
+  .bordered {
+    border-top-color: black;
+  }
+
   .add-row {
     cursor: pointer;
     svg {

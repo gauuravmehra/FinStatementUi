@@ -20,24 +20,26 @@ export const calcVariancePercent = (
   return percentage === "0.00" ? "" : `${percentage}%`;
 };
 
-export const updatedSum = (
-  rowsData: TableRowsProps[],
-  setRowsData: React.Dispatch<React.SetStateAction<TableRowsProps[]>>
-) => {
+export const updatedSum = (rowsData: TableRowsProps[]): TableRowsProps[] => {
+  // fields to sum
   let totalRevenue2021 = 0;
   let totalRevenue2022 = 0;
   let totalRevenue2024 = 0;
+
+  let totalVariance = 0;
+  let totalVariancePercent = 0;
 
   let totalExpense2021 = 0;
   let totalExpense2022 = 0;
   let totalExpense2024 = 0;
 
   rowsData.forEach((row) => {
-    console.log(row);
     if (row.type === ROW_TYPE.REVENUE) {
       totalRevenue2021 += formattedNumber(row["year2021"]);
       totalRevenue2022 += formattedNumber(row["year2022"]);
       totalRevenue2024 += formattedNumber(row["year2024"]);
+      totalVariance += formattedNumber(row?.variance || "0");
+      totalVariancePercent += formattedNumber(row?.variancePercent || "0");
     } else if (row.type === ROW_TYPE.EXPENSE) {
       totalExpense2021 += formattedNumber(row["year2021"]);
       totalExpense2022 += formattedNumber(row["year2022"]);
@@ -53,6 +55,10 @@ export const updatedSum = (
     totalRevenueRow["year2021"] = getFormattedValueOrEmpty(totalRevenue2021);
     totalRevenueRow["year2022"] = getFormattedValueOrEmpty(totalRevenue2022);
     totalRevenueRow["year2024"] = getFormattedValueOrEmpty(totalRevenue2024);
+
+    totalRevenueRow["variance"] = getFormattedValueOrEmpty(totalVariance);
+    totalRevenueRow["variancePercent"] =
+      getFormattedValueOrEmpty(totalVariancePercent);
   }
 
   const totalExpenseRow = updatedData.find(
@@ -63,8 +69,7 @@ export const updatedSum = (
     totalExpenseRow["year2022"] = getFormattedValueOrEmpty(totalExpense2022);
     totalExpenseRow["year2024"] = getFormattedValueOrEmpty(totalExpense2024);
   }
-
-  setRowsData(updatedData);
+  return updatedData;
 };
 
 export const updatedVariance = (
@@ -84,16 +89,14 @@ export const updatedVariance = (
         changedData["year2024"].replace(/,/g, "") || "0"
       );
 
-      clone[rowIndex]["varianceRow"] = calcVariance(year2022Val, year2024Val);
-      clone[rowIndex]["variancePercentRow"] = calcVariancePercent(
+      clone[rowIndex]["variance"] = calcVariance(year2022Val, year2024Val);
+      clone[rowIndex]["variancePercent"] = calcVariancePercent(
         year2022Val,
         year2024Val
       );
     }
-
     return clone;
   }
-
   return rowsData;
 };
 
@@ -102,5 +105,5 @@ export const getFormattedValueOrEmpty = (value: number): string => {
 };
 
 export const formattedNumber = (value: string): number => {
-  return parseFloat(value.replace(/,/g, "") || "0");
+  return Number(parseFloat(value.replace(/[^0-9.-]/g, "") || "0"));
 };

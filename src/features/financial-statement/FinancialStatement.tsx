@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import Table from "../common/table/Table";
 import Header from "../header/Header";
-import { initColumnConfig, initRowsData } from "./FinancialStatement.config";
+import {
+  Headings,
+  initColumnConfig,
+  initRowsData,
+} from "./FinancialStatement.config";
 import { ICellRendererParams } from "ag-grid-community";
 import { FaPlusCircle } from "react-icons/fa";
 import { StyledContainer } from "./FinancialStatement.style";
@@ -14,7 +18,8 @@ export const FinancialStatement = () => {
   const [rowsData, setRowsData] = useState(initRowsData);
 
   useEffect(() => {
-    updatedSum(rowsData, setRowsData);
+    const updatedData = updatedSum(rowsData);
+    setRowsData(updatedData);
   }, []);
 
   const insertEmptyRow = ({
@@ -32,6 +37,8 @@ export const FinancialStatement = () => {
       year2021: "",
       year2022: "",
       year2024: "",
+      variance: "",
+      variancePercent: "",
       type,
     };
 
@@ -47,8 +54,8 @@ export const FinancialStatement = () => {
       const changedData = event.data;
       const updatedRowsData = updatedVariance(changedData, rowsData);
       if (updatedRowsData) {
-        updatedSum(updatedRowsData, setRowsData);
-        setRowsData(updatedRowsData);
+        const updatedSumData = updatedSum(updatedRowsData);
+        setRowsData(updatedSumData);
       }
     },
     [rowsData]
@@ -59,7 +66,7 @@ export const FinancialStatement = () => {
   }, []);
 
   const columnRenderer = columns.map((col, index) => {
-    if (index === 0) {
+    if (col.headerName === Headings.MILLIONS) {
       return {
         ...col,
         cellRenderer: (params: ICellRendererParams) => {

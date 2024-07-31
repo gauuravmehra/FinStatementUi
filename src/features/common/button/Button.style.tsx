@@ -18,10 +18,10 @@ export const StyledButton = styled.button`
   }
 
   &:hover {
-    background-color: #ff9f9f;
+    box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
   }
 
   &:active {
-    background-color: #ff8181;
+    box-shadow: none;
   }
 `;

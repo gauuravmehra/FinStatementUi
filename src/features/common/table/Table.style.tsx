@@ -19,7 +19,7 @@ export const StyledTableContainer = styled.div`
   }
 
   .ag-row div[col-id="variance"],
-  .ag-row div[col-id="variancePercentage"] {
+  .ag-row div[col-id="variancePercent"] {
     &.error {
       color: red;
     }

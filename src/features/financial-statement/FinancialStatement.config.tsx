@@ -233,6 +233,7 @@ export const getInitialColumConfig = (user: string): ColDef[] => [
     headerName: Headings.MILLIONS,
     field: "million",
     width: 230,
+    editable: user === "Analyst",
     cellClass: (params) => (params.data.isChildRow ? "child-row" : ""),
   },
   {

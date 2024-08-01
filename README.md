@@ -2,13 +2,11 @@
 
 ## `http://localhost:3000/?user=Analyst`
 
-On this url 2024 column will be editable
+On this url 31-12-2024 and million column will be editable
 
 ## `http://localhost:3000/?user=guest`
 
-On this url 2024 column will not be editable
-
-
+On this url nothing will be editable
 
 ## Available Scripts
 

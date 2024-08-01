@@ -12,6 +12,10 @@ export const StyledContainer = styled.div`
     border-top-color: black;
   }
 
+  .child-row {
+    text-indent: 2rem;
+  }
+
   .add-row {
     cursor: pointer;
     svg {

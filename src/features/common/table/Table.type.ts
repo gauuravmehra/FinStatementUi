@@ -10,4 +10,5 @@ export interface TableRowsProps {
   isHeaderRow?: boolean;
   isOthersRow?: boolean;
   isTotalRow?: boolean;
+  isChildRow?: boolean;
 }

@@ -1,7 +1,15 @@
-import { ColDef, ValueGetterParams } from "ag-grid-community";
+import {
+  ColDef,
+  ValueGetterParams,
+  ValueParserParams,
+} from "ag-grid-community";
 import { TableRowsProps } from "../common/table/Table.type";
 import { v4 as uuidv4 } from "uuid";
-import { calcVariance, calcVariancePercent } from "./FinancialStatement.utils";
+import {
+  calcVariance,
+  calcVariancePercent,
+  formatNumberWithCommas,
+} from "./FinancialStatement.utils";
 
 export const ROW_TYPE = {
   HEADER: "HEADER",
@@ -220,32 +228,60 @@ export const initRowsData: TableRowsProps[] = [
   },
 ];
 
-export const initColumnConfig: ColDef[] = [
+export const getInitialColumConfig = (user: string): ColDef[] => [
   {
     headerName: Headings.MILLIONS,
     field: "million",
     width: 230,
+    cellClass: (params) => (params.data.isChildRow ? "child-row" : ""),
   },
   {
     headerName: Headings.YEAR_2021,
     field: "year2021",
     width: 160,
-    editable: (params) => !params.data.isTotalRow,
+    editable: false,
     cellClass: (params) => (params.data.isTotalRow ? "bold bordered" : ""),
+    onCellValueChanged: (params) => {
+      const newVal = params.newValue
+        ? formatNumberWithCommas(params.newValue)
+        : 0;
+      params.data.year2021 = newVal;
+      return newVal;
+    },
   },
   {
     headerName: Headings.YEAR_2022,
     field: "year2022",
     width: 160,
-    editable: (params) => !params.data.isTotalRow,
+    editable: false,
     cellClass: (params) => (params.data.isTotalRow ? "bold bordered" : ""),
+    onCellValueChanged: (params) => {
+      const newVal = params.newValue
+        ? formatNumberWithCommas(params.newValue)
+        : 0;
+      params.data.year2022 = newVal;
+      return newVal;
+    },
   },
   {
     headerName: Headings.YEAR_2024,
     field: "year2024",
     width: 160,
-    editable: (params) => !params.data.isTotalRow,
+    editable: (params) => !params.data.isTotalRow && user === "Analyst",
     cellClass: (params) => (params.data.isTotalRow ? "bold bordered" : ""),
+    valueParser: (params: ValueParserParams): number | string => {
+      let newValue = params.newValue.replace(/,/g, "");
+      return Number.isNaN(Number(newValue))
+        ? params.oldValue
+        : formatNumberWithCommas(newValue);
+    },
+    onCellValueChanged: (params) => {
+      const newVal = params.newValue
+        ? formatNumberWithCommas(params.newValue)
+        : 0;
+      params.data.year2024 = newVal;
+      return newVal;
+    },
   },
   {
     headerName: Headings.VARIANCE,
@@ -263,10 +299,10 @@ export const initColumnConfig: ColDef[] = [
     valueGetter: (params: ValueGetterParams) => {
       if (params.data.type === ROW_TYPE.REVENUE) {
         const val2022 = parseFloat(
-          params.data["year2022"].replace(/,/g, "") || "0"
+          params.data["year2022"]?.replace(/,/g, "") || "0"
         );
         const val2024 = parseFloat(
-          params.data["year2024"].replace(/,/g, "") || "0"
+          params.data["year2024"]?.replace(/,/g, "") || "0"
         );
         if (val2022 === 0) return "";
         const val = calcVariance(val2022, val2024);
@@ -296,10 +332,10 @@ export const initColumnConfig: ColDef[] = [
       ) {
         if (params.data.type === ROW_TYPE.REVENUE) {
           const val2022 = parseFloat(
-            params.data["year2022"].replace(/,/g, "") || "0"
+            params.data["year2022"]?.replace(/,/g, "") || "0"
           );
           const val2024 = parseFloat(
-            params.data["year2024"].replace(/,/g, "") || "0"
+            params.data["year2024"]?.replace(/,/g, "") || "0"
           );
           if (val2022 === 0) return "";
           const val = calcVariancePercent(val2022, val2024);

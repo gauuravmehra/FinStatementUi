@@ -1,12 +1,14 @@
+import { parse } from "path";
 import { TableRowsProps } from "../common/table/Table.type";
 import { ROW_TYPE } from "./FinancialStatement.config";
+import { NewRowsCountType } from "./FinancialStatement.type";
 
 export const calcVariance = (
   previousYear: number,
   currentYear: number
 ): string => {
   const variance = (currentYear - previousYear).toFixed(2);
-  return variance === "0.00" ? "" : variance;
+  return variance === "0.00" ? "" : formatNumberWithCommas(variance);
 };
 
 export const calcVariancePercent = (
@@ -38,8 +40,10 @@ export const updatedSum = (rowsData: TableRowsProps[]): TableRowsProps[] => {
       totalRevenue2021 += formattedNumber(row["year2021"]);
       totalRevenue2022 += formattedNumber(row["year2022"]);
       totalRevenue2024 += formattedNumber(row["year2024"]);
-      totalVariance += formattedNumber(row?.variance || "0");
-      totalVariancePercent += formattedNumber(row?.variancePercent || "0");
+      if (row["year2022"] && row["year2024"]) {
+        totalVariance += formattedNumber(row?.variance || "0");
+        totalVariancePercent += formattedNumber(row?.variancePercent || "0");
+      }
     } else if (row.type === ROW_TYPE.EXPENSE) {
       totalExpense2021 += formattedNumber(row["year2021"]);
       totalExpense2022 += formattedNumber(row["year2022"]);
@@ -82,12 +86,12 @@ export const updatedVariance = (
     clone[rowIndex] = changedData;
 
     if (changedData.type === ROW_TYPE.REVENUE) {
-      const year2022Val = parseFloat(
-        changedData["year2022"].replace(/,/g, "") || "0"
-      );
-      const year2024Val = parseFloat(
-        changedData["year2024"].replace(/,/g, "") || "0"
-      );
+      const year2022Val = changedData["year2022"]
+        ? formattedNumber(changedData["year2022"])
+        : 0;
+      const year2024Val = changedData["year2024"]
+        ? formattedNumber(changedData["year2024"])
+        : 0;
 
       clone[rowIndex]["variance"] = calcVariance(year2022Val, year2024Val);
       clone[rowIndex]["variancePercent"] = calcVariancePercent(
@@ -101,9 +105,20 @@ export const updatedVariance = (
 };
 
 export const getFormattedValueOrEmpty = (value: number): string => {
-  return value ? value.toFixed(2) : "";
+  return value ? formatNumberWithCommas(value) : "";
 };
 
 export const formattedNumber = (value: string): number => {
-  return Number(parseFloat(value.replace(/[^0-9.-]/g, "") || "0"));
+  return value ? Number(parseFloat(value?.replace(/[^0-9.-]/g, "") || "0")) : 0;
+};
+
+export const formatNumberWithCommas = (value: number | string): string => {
+  let val = typeof value === "number" ? value.toString() : value;
+  val = val.replace(/,/g, "");
+  let parts = parseFloat(val).toFixed(2);
+  let partsArr = parts.split(".");
+  return (
+    partsArr[0]?.replace(/\B(?=(\d{3})+(?=$))/g, ",") +
+    (partsArr[1] ? `.${partsArr[1]}` : `.00`)
+  );
 };

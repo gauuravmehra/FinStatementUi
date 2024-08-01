@@ -25,6 +25,7 @@ export const Table = ({
         rowData={rowsData}
         onCellValueChanged={onCellValueChanged}
         onGridReady={onGridReady}
+        suppressScrollOnNewData={true}
         defaultColDef={{
           editable: true,
           sortable: true,
